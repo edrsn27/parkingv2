@@ -2,94 +2,69 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import UnPark from "./UnPark";
-const columns = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "carPlateNumber", headerName: "Plate Number", width: 130 },
-  {
-    field: "carType",
-    headerName: "Car Type",
-    width: 130,
-    valueGetter: (params) =>
-      `${
-        params.row.carType == "S"
-          ? "Small"
-          : params.row.carType == "M"
-          ? "Medium"
-          : params.row.carType == "L"
-          ? "Large"
-          : ""
-      }`,
-  },
-  {
-    field: "parkingSlotName",
-    headerName: "Parking Slot",
-    type: "string",
-    width: 120,
-  },
-  {
-    field: "parkingSlotType",
-    headerName: "Parking Slot Type",
-    type: "string",
-    width: 120,
-  },
-
-  {
-    field: "distance",
-    headerName: "Distance",
-    type: "number",
-    width: 90,
-  },
-  {
-    field: "checkIn",
-    headerName: "Check-in",
-    sortable: true,
-    width: 200,
-  },
-  {
-    field: "checkOut",
-    headerName: "Check-out",
-    sortable: true,
-    width: 200,
-  },
-  {
-    field: "action",
-    headerName: "Action",
-    sortable: false,
-    renderCell: (params) => {
-      const onClick = (e) => {
-        e.stopPropagation(); // don't select this row after clicking
-      };
-
-      return <UnPark data={params.row} />;
-    },
-  },
-];
+import MUIDataTable from "mui-datatables";
 
 export default function DataTable(props) {
-  const { transactions } = props;
-  console.log(transactions);
+  const { transactions, setTransactions } = props;
+  const columns = [
+    {
+      name: "Unpark",
+      options: {
+        filter: false,
+        sort: false,
+        empty: true,
+        customBodyRenderLite: (dataIndex) => {
+       
+            return (
+              <UnPark
+                dataIndex={dataIndex}
+                setTransactions={setTransactions}
+                transactions={transactions}
+                data={transactions[dataIndex]}
+              />
+            );
+        },
+      },
+    },
+    { name: "id", label: "ID" ,width:100},
+    { name: "carPlateNumber", label: "Plate Number", width: 130 },
+    {
+      name: "carType",
+      label: "Car Type",
+    },
+    {
+      name: "parkingSlotName",
+      label: "Parking Slot",
+    },
+    {
+      name: "parkingSlotType",
+      label: "Parking Slot Type",
+    },
+
+    {
+      name: "distance",
+      label: "Distance",
+    },
+    {
+      name: "fee",
+      label: "Fee",
+    },
+    {
+      name: "checkIn",
+      label: "Check-in",
+    },
+    {
+      name: "checkOut",
+      label: "Check-out",
+    },
+  ];
   return (
     <div style={{ height: 500, width: "100%" }}>
       {transactions && (
-        <DataGrid
-          height={300}
-          rows={transactions}
+        <MUIDataTable
+          title={"Employee List"}
+          data={transactions}
           columns={columns}
-          pageSize={10}
-          rowsPerPageOptions={[10]}
-          actions={[
-            {
-              icon: "save",
-              tooltip: "Save User",
-              onClick: (event, rowData) => alert("You saved " + rowData.name),
-            },
-            {
-              icon: "delete",
-              tooltip: "Delete User",
-              onClick: (event, rowData) =>
-                confirm("You want to delete " + rowData.name),
-            },
-          ]}
         />
       )}
     </div>

@@ -13,12 +13,11 @@ export default function BasicSelect(props) {
     let obj = terminals.find((item) => item.name === event.target.value);
 
     setSelectedTerminal(obj);
-  
   };
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Terminal</InputLabel>
+        <InputLabel id="demo-simple-select-label">Entry Point</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"

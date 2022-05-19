@@ -81,10 +81,13 @@ export default function Index() {
           setParkingSlots(newParkingSlots);
 
           let transactionData = {
-            id: transactions.length + 1,
+            id:
+              carType +
+              moment().format("YYYY-MM-DD-") +
+              (transactions.length + 1),
             carPlateNumber: carPlateNumber,
             carType: carType,
-            checkIn: moment().format("MMMM Do YYYY, h:mm:ss a"),
+            checkIn: moment().format(),
             checkOut: null,
             parkingSlotName: nearestParkingSpace.name,
             fee: "",
@@ -181,7 +184,7 @@ export default function Index() {
   return (
     <Layout>
       <br />
-      <h1>ENTRY</h1>
+      <h1>00 Parking Lot</h1>
       <Grid container spacing={2}>
         <Grid item xs={2}>
           <Terminal
@@ -215,7 +218,10 @@ export default function Index() {
       <br />
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Transactions transactions={transactions} />
+          <Transactions
+            transactions={transactions}
+            setTransactions={setTransactions}
+          />
         </Grid>
       </Grid>
       <br />

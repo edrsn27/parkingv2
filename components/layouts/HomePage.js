@@ -49,7 +49,7 @@ export default function Album(props) {
         <Container fluid="true"> {props.children}</Container>
       </main>
       {/* Footer */}
-      <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
+      {/* <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
         <Typography variant="h6" align="center" gutterBottom>
           Footer
         </Typography>
@@ -62,7 +62,7 @@ export default function Album(props) {
           Something here to give the footer a purpose!
         </Typography>
         <Copyright />
-      </Box>
+      </Box> */}
       {/* End footer */}
     </ThemeProvider>
   );
