@@ -14,19 +14,18 @@ export default function DataTable(props) {
         sort: false,
         empty: true,
         customBodyRenderLite: (dataIndex) => {
-       
-            return (
-              <UnPark
-                dataIndex={dataIndex}
-                setTransactions={setTransactions}
-                transactions={transactions}
-                data={transactions[dataIndex]}
-              />
-            );
+          return (
+            <UnPark
+              dataIndex={dataIndex}
+              setTransactions={setTransactions}
+              transactions={transactions}
+              data={transactions[dataIndex]}
+            />
+          );
         },
       },
     },
-    { name: "id", label: "ID" ,width:100},
+    { name: "id", label: "ID", width: 100 },
     { name: "carPlateNumber", label: "Plate Number", width: 130 },
     {
       name: "carType",
@@ -59,12 +58,13 @@ export default function DataTable(props) {
     },
   ];
   return (
-    <div style={{ height: 500, width: "100%" }}>
+    <div style={{ height: 1000, width: "100%" }}>
       {transactions && (
         <MUIDataTable
           title={"Employee List"}
           data={transactions}
           columns={columns}
+          
         />
       )}
     </div>

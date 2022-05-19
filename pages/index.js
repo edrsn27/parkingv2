@@ -7,6 +7,7 @@ import Terminal from "../components/Terminal/Index";
 import Button from "@mui/material/Button";
 import moment from "moment";
 import Transactions from "../components/Transactions/Index";
+import ParkingSlots from "../components/ParkingSlots/Index";
 export default function Index() {
   //transactions
   const [transactions, setTransactions] = useState([]);
@@ -222,6 +223,13 @@ export default function Index() {
             transactions={transactions}
             setTransactions={setTransactions}
           />
+        </Grid>
+      </Grid>
+      <br />
+      <br />
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <ParkingSlots parkingSlots={parkingSlots}/>
         </Grid>
       </Grid>
       <br />
