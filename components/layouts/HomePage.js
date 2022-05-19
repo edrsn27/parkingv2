@@ -45,7 +45,9 @@ export default function Album(props) {
           </Typography>
         </Toolbar>
       </AppBar>
-      <main>{props.children}</main>
+      <main>
+        <Container fluid="true"> {props.children}</Container>
+      </main>
       {/* Footer */}
       <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
         <Typography variant="h6" align="center" gutterBottom>
