@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import moment from "moment";
 import Transactions from "../components/Transactions/Index";
 import ParkingSlots from "../components/ParkingSlots/Index";
+import EntryPoints from "../components/Terminals/Index";
 export default function Index() {
   //transactions
   const [transactions, setTransactions] = useState([]);
@@ -229,10 +230,21 @@ export default function Index() {
       <br />
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <ParkingSlots parkingSlots={parkingSlots}/>
+          <ParkingSlots parkingSlots={parkingSlots} />
         </Grid>
       </Grid>
       <br />
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <br />
+          <br />
+          <h1>TERMINALS DISTANCE TO PARKING SLOTS</h1>
+          {terminals &&
+            terminals.map((item, index) => {
+              return <EntryPoints item={item} key={index} />;
+            })}
+        </Grid>
+      </Grid>
     </Layout>
   );
 }
