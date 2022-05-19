@@ -1,14 +1,101 @@
 import { useState, useEffect } from "react";
 import Layout from "../components/layouts/HomePage";
-import Terminal from "../components/Terminal/Index";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 
+import Car from "../components/Car/Index";
+import Terminal from "../components/Terminal/Index";
+import Button from "@mui/material/Button";
+import moment from "moment";
 export default function Index() {
+  //transactions
+  const [transactions, setTransactions] = useState("");
+  // terminals
   const [terminals, setTerminals] = useState("");
   const [selectedTerminal, setSelectedTerminal] = useState("");
+  // parking slots
   const [parkingSlots, setParkingSlots] = useState("");
+
+  // carType
+  const [carType, setCarType] = useState("");
+  const [carPlateNumber, setCarPlateNumber] = useState("");
+
+  function findWithAttr(array, attr, value) {
+    for (var i = 0; i < array.length; i += 1) {
+      if (array[i][attr] === value) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  const submitPart = () => {
+    if (selectedTerminal && carType && carPlateNumber) {
+      let data = {
+        carType: carType,
+        carPlateNumber: carPlateNumber,
+        terminal: selectedTerminal.name,
+      };
+
+      let acceptedParkingType = "";
+      if (carType == "S") {
+        acceptedParkingType = ["SP", "MP", "LP"];
+      } else if (carType == "M") {
+        acceptedParkingType = ["MP", "LP"];
+      } else if (carType == "L") {
+        acceptedParkingType = ["LP"];
+      }
+      let availableParkingSpot = "";
+
+      availableParkingSpot = parkingSlots.filter((slot) => {
+        return (
+          slot.isOccupied == false && acceptedParkingType.includes(slot.type)
+        );
+      });
+
+      // filter the available parking spot
+      let myArrayFiltered = selectedTerminal.parkingSlots.filter((el) => {
+        return availableParkingSpot.some((f) => {
+          return f.name === el.name;
+        });
+      });
+
+      myArrayFiltered.sort(function (a, b) {
+        return a.distance - b.distance;
+      });
+      let nearestParkingSpace = myArrayFiltered[0];
+      if (nearestParkingSpace) {
+        console.log(nearestParkingSpace);
+        let index = findWithAttr(
+          parkingSlots,
+          "name",
+          nearestParkingSpace.name
+        ); // returns 0
+        let newParkingSlots = [...parkingSlots];
+        newParkingSlots[index].isOccupied = true;
+        setParkingSlots(newParkingSlots);
+
+        let transactionData = {
+          id: transactions.length + 1,
+          carPlateNumber: carPlateNumber,
+          carType: carType,
+          checkIn: moment().format("MMMM Do YYYY, h:mm:ss a"),
+          checkOut: null,
+          parkingSlotName: nearestParkingSpace.name,
+        };
+
+        setTransactions([...transactions, transactionData]);
+      } else {
+        alert("No parking slot available");
+      }
+    } else if (!selectedTerminal) {
+      alert("select terminal");
+    } else if (!carType) {
+      alert("select car type");
+    } else if (!carPlateNumber) {
+      alert("input plate number");
+    }
+  };
+
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     if (!terminals && !parkingSlots) {
@@ -80,6 +167,7 @@ export default function Index() {
   return (
     <Layout>
       <br />
+      <h1>ENTRY</h1>
       <Grid container spacing={2}>
         <Grid item xs={2}>
           <Terminal
@@ -88,6 +176,26 @@ export default function Index() {
             selectedTerminal={selectedTerminal}
             setSelectedTerminal={setSelectedTerminal}
           />
+        </Grid>
+      </Grid>
+
+      <br />
+
+      <Grid container spacing={2}>
+        <Grid item xs={2}>
+          <Car
+            setCarType={setCarType}
+            setCarPlateNumber={setCarPlateNumber}
+            carPlateNumber={carPlateNumber}
+          />
+        </Grid>
+      </Grid>
+      <br />
+      <Grid container spacing={2}>
+        <Grid item xs={2}>
+          <Button variant="contained" onClick={submitPart}>
+            Park
+          </Button>
         </Grid>
       </Grid>
     </Layout>
