@@ -11,7 +11,7 @@ const columns = [
     renderCell: (params) => {
       return (
         <div>
-         {params.row.isOccupied ? <Chip label="Occupied" color="warning" />:<Chip label="Free" color="primary" />} 
+         {params.row.isOccupied ? <Chip label="Occupied" color="warning" />:<Chip label="Open" color="primary" />} 
         </div>
       );
     },
