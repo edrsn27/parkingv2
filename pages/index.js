@@ -223,6 +223,8 @@ export default function Index() {
           <Transactions
             transactions={transactions}
             setTransactions={setTransactions}
+            setParkingSlots={setParkingSlots}
+            parkingSlots={parkingSlots}
           />
         </Grid>
       </Grid>

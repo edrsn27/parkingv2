@@ -20,7 +20,15 @@ const style = {
 };
 
 export default function BasicModal(props) {
-  const { data, transactions, setTransactions, dataIndex } = props;
+  const {
+    data,
+    transactions,
+    setTransactions,
+    dataIndex,
+    setParkingSlots,
+    parkingSlots,
+  } = props;
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -73,11 +81,22 @@ export default function BasicModal(props) {
       setFee(Datafee);
     }
 
+    // update parking slot status to isOccupied false
+ 
+    const parkingSlot = parkingSlots.find(item=>item.name == data.parkingSlotName)
+  
+    const parkingSlotIndex = parkingSlots.indexOf(parkingSlot)
+    console.log("parkingSlotIndex",parkingSlotIndex)
+    let newParkingSlots = [...parkingSlots];
+    newParkingSlots[parkingSlotIndex].isOccupied = false;
+    setParkingSlots(newParkingSlots)
+    // update transactions
+
     let newTransactions = [...transactions];
     newTransactions[dataIndex].fee = Datafee;
     newTransactions[dataIndex].checkOut = moment().format();
     setTransactions(newTransactions);
-    console.log(newTransactions);
+   
   };
   const calculateFee = () => {
     var end = moment(new Date(data.checkIn)); //todays date

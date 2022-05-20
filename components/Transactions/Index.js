@@ -5,7 +5,13 @@ import UnPark from "./UnPark";
 import MUIDataTable from "mui-datatables";
 
 export default function DataTable(props) {
-  const { transactions, setTransactions } = props;
+  const {
+    transactions,
+    setTransactions,
+    setParkingSlots,
+    parkingSlots,
+  } = props;
+
   const columns = [
     {
       name: "Unpark",
@@ -20,6 +26,8 @@ export default function DataTable(props) {
               setTransactions={setTransactions}
               transactions={transactions}
               data={transactions[dataIndex]}
+              setParkingSlots={setParkingSlots}
+              parkingSlots={parkingSlots}
             />
           );
         },
@@ -64,7 +72,6 @@ export default function DataTable(props) {
           title={"Employee List"}
           data={transactions}
           columns={columns}
-          
         />
       )}
     </div>
