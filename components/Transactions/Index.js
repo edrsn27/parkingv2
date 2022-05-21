@@ -4,6 +4,8 @@ import Button from "@mui/material/Button";
 import UnPark from "./UnPark";
 import MUIDataTable from "mui-datatables";
 import moment from "moment";
+import Typography from "@mui/material/Typography";
+
 export default function DataTable(props) {
   const {
     transactions,
@@ -61,8 +63,12 @@ export default function DataTable(props) {
       label: "Check-in",
       options: {
         customBodyRender: (value) => {
-          console.log(value);
-          return moment(value).format("MMMM Do YYYY, h:mm:ss a");
+          if (value == null) return "";
+          return (
+            <Typography component={"span"} noWrap={true}>
+              {moment(value).format("MMMM Do YYYY, h:mm:ss a")}
+            </Typography>
+          );
         },
       },
     },
@@ -72,7 +78,11 @@ export default function DataTable(props) {
       options: {
         customBodyRender: (value) => {
           if (value == null) return "";
-          return moment(value).format("MMMM Do YYYY, h:mm:ss a");
+          return (
+            <Typography component={"span"} noWrap={true}>
+              {moment(value).format("MMMM Do YYYY, h:mm:ss a")}
+            </Typography>
+          );
         },
       },
     },

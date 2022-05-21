@@ -46,7 +46,7 @@ export default function Album(props) {
         </Toolbar>
       </AppBar>
       <main>
-        <Container fluid="true"> {props.children}</Container>
+        <Container maxWidth="xl">{props.children} </Container>
       </main>
       {/* Footer */}
       {/* <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
