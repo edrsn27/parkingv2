@@ -9,7 +9,12 @@ import moment from "moment";
 import Transactions from "../components/Transactions/Index";
 import ParkingSlots from "../components/ParkingSlots/Index";
 import EntryPoints from "../components/Terminals/Index";
+import Alert from "@mui/material/Alert";
 export default function Index() {
+  // alert
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertText, setAlertText] = useState("");
+  const [alertType, setAlertType] = useState("");
   //transactions
   const [transactions, setTransactions] = useState([]);
   // terminals
@@ -32,6 +37,9 @@ export default function Index() {
   }
 
   const submitPark = () => {
+    setShowAlert(false);
+    setAlertText("");
+    setAlertType("");
     if (selectedTerminal && carType && carPlateNumber) {
       // check if plate number is already;
       let checkPlate = transactions.find(
@@ -104,18 +112,31 @@ export default function Index() {
           newTransactions.unshift(transactionData);
           console.log(newTransactions);
           setTransactions(newTransactions);
+          setShowAlert(true);
+          setAlertText("Success! TicketID - "+transactionData.id);
+          setAlertType("success");
         } else {
-          alert("No parking slot available");
+          setShowAlert(true);
+          setAlertText("No parking slot available");
+          setAlertType("error");
         }
       } else {
-        alert("Unpark first the Car");
+        setShowAlert(true);
+        setAlertText("Car already inside the parking lot");
+        setAlertType("error");
       }
     } else if (!selectedTerminal) {
-      alert("select terminal");
+      setShowAlert(true);
+      setAlertText("Select a Entry Point/Terminal");
+      setAlertType("error");
     } else if (!carType) {
-      alert("select car type");
+      setShowAlert(true);
+      setAlertText("Select type of the car");
+      setAlertType("error");
     } else if (!carPlateNumber) {
-      alert("input plate number");
+      setShowAlert(true);
+      setAlertText("Input car plate number");
+      setAlertType("error");
     }
   };
 
@@ -191,6 +212,8 @@ export default function Index() {
     <Layout>
       <br />
       <h1>00 Parking Lot</h1>
+      {showAlert && <Alert severity={alertType}>{alertText}</Alert>}
+      <br />
       <Grid container spacing={2}>
         <Grid item xs={2}>
           <Terminal
