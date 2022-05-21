@@ -88,10 +88,10 @@ export default function DataTable(props) {
     },
   ];
   return (
-    <div style={{ height: 1000, width: "100%" }}>
+    <div style={{ height: "auto", width: "100%" }}>
       {transactions && (
         <MUIDataTable
-          title={"Employee List"}
+          title={"List of Transactions"}
           data={transactions}
           columns={columns}
         />
