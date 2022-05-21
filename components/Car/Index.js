@@ -5,7 +5,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
+import Typography from "@mui/material/Typography";
 export default function BasicTextFields(props) {
   const { setCarType, setCarPlateNumber, carPlateNumber } = props;
   const [input, setInput] = React.useState("");
@@ -56,6 +56,10 @@ export default function BasicTextFields(props) {
           value={carPlateNumber}
           onChange={(e) => setCarPlateNumber(e.target.value)}
         />
+        <Typography variant="caption" display="block" gutterBottom>
+          For car with same plate number (eg. government official owned car)
+          input any unique identifier
+        </Typography>
       </FormControl>
     </Box>
   );
