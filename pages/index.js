@@ -49,12 +49,13 @@ export default function Index() {
         (item) => carPlateNumber == item.carPlateNumber && item.checkOut == null
       );
       if (!checkPlate) {
-        // check if returning before 1hr
+        // check last transaction of the car
         let checkLastTransaction = transactions.find(
           (item) => carPlateNumber == item.carPlateNumber
         );
         console.log(checkLastTransaction);
         let isReturning = false;
+        // check if the car is returning before 1hr
         if (checkLastTransaction) {
           var end = moment(new Date()); //todays date
           var now = moment(checkLastTransaction.checkOut); // another date
@@ -67,12 +68,7 @@ export default function Index() {
           }
         }
 
-        let data = {
-          carType: carType,
-          carPlateNumber: carPlateNumber,
-          terminal: selectedTerminal.name,
-        };
-
+        // check the car size and allocate accepted parking slot tyoe size
         let acceptedParkingType = "";
         if (carType == "S") {
           acceptedParkingType = ["SP", "MP", "LP"];
@@ -82,14 +78,14 @@ export default function Index() {
           acceptedParkingType = ["LP"];
         }
         let availableParkingSpot = "";
-
+        // check if there is available parking slot for the car
         availableParkingSpot = parkingSlots.filter((slot) => {
           return (
             slot.isOccupied == false && acceptedParkingType.includes(slot.type)
           );
         });
 
-        // filter the available parking spot
+        // get the nearest parking slot
         let myArrayFiltered = selectedTerminal.parkingSlots.filter((el) => {
           return availableParkingSpot.some((f) => {
             return f.name === el.name;
@@ -100,16 +96,21 @@ export default function Index() {
           return a.distance - b.distance;
         });
         let nearestParkingSpace = myArrayFiltered[0];
+        // if there is available parking slot
         if (nearestParkingSpace) {
+          // get the index of the nearest parking lost
           let index = findWithAttr(
             parkingSlots,
             "name",
             nearestParkingSpace.name
-          ); // returns 0
+          ); 
+          // update it to occupied
           let newParkingSlots = [...parkingSlots];
           newParkingSlots[index].isOccupied = true;
           setParkingSlots(newParkingSlots);
 
+
+          // new transactions data
           let transactionData = {
             id:
               carType +
@@ -129,33 +130,39 @@ export default function Index() {
             ).type,
             isReturning: isReturning,
           };
-
+          // add the new transaction data to start of the array of transactions of data
           let newTransactions = [...transactions];
           newTransactions.unshift(transactionData);
-
+          // update the transactions data using react hooks
           setTransactions(newTransactions);
+          // show success alert
           setShowAlert(true);
           setAlertText("Success! TicketID - " + transactionData.id);
           setAlertType("success");
         } else {
+          //show error alert if there is no available parking spot
           setShowAlert(true);
           setAlertText("No parking slot available");
           setAlertType("error");
         }
       } else {
+        // show error if the car is in the parking slot and try to park
         setShowAlert(true);
         setAlertText("Car already inside the parking lot");
         setAlertType("error");
       }
     } else if (!selectedTerminal) {
+      // show error if there is no selected terminal | Entry point
       setShowAlert(true);
       setAlertText("Select a Entry Point/Terminal");
       setAlertType("error");
     } else if (!carType) {
+      //show error if there is no type of car selected
       setShowAlert(true);
       setAlertText("Select type of the car");
       setAlertType("error");
     } else if (!carPlateNumber) {
+      // show errror if there is no plate number input
       setShowAlert(true);
       setAlertText("Input car plate number");
       setAlertType("error");
@@ -165,6 +172,7 @@ export default function Index() {
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     if (!terminals && !parkingSlots) {
+      // if there is no terminals data add terminal data
       const terminalData = [
         {
           name: "Terminal 1",
@@ -212,6 +220,7 @@ export default function Index() {
           ],
         },
       ];
+      // if there is no parking slot data add parking slot data
       const parkingSlots = [
         { id: 1, name: "A1", isOccupied: false, type: "SP" },
         { id: 2, name: "A2", isOccupied: false, type: "MP" },
@@ -224,11 +233,13 @@ export default function Index() {
         { id: 9, name: "A9", isOccupied: false, type: "SP" },
         { id: 10, name: "A10", isOccupied: false, type: "MP" },
       ];
-
+      // update terminal data and parking slot using react hook
       setTerminals(terminalData);
       setParkingSlots(parkingSlots);
     }
+    // set current timestamp
     var timer = setInterval(() => setDate(new Date()), 1000);
+    // every 1 sec update current timestamp
     return function cleanup() {
       clearInterval(timer);
     };
