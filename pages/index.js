@@ -31,7 +31,7 @@ export default function Index() {
     return -1;
   }
 
-  const submitPart = () => {
+  const submitPark = () => {
     if (selectedTerminal && carType && carPlateNumber) {
       // check if plate number is already;
       let checkPlate = transactions.find(
@@ -216,7 +216,7 @@ export default function Index() {
       <br />
       <Grid container spacing={2}>
         <Grid item xs={2}>
-          <Button variant="contained" onClick={submitPart}>
+          <Button variant="contained" onClick={submitPark}>
             Park
           </Button>
         </Grid>
