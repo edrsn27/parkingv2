@@ -3,6 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 const columns = [
+  { field: "id", headerName: "PARKING SLOT ID", width: 200 },
   { field: "name", headerName: "NAME", width: 200 },
   {
     field: "isOccupied",

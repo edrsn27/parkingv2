@@ -100,10 +100,10 @@ export default function Index() {
           };
 
           // setTransactions([...transactions, transactionData]);
-          let newTransactions  = [...transactions];
-          newTransactions.unshift(transactionData)
-          console.log(newTransactions)
-          setTransactions(newTransactions)
+          let newTransactions = [...transactions];
+          newTransactions.unshift(transactionData);
+          console.log(newTransactions);
+          setTransactions(newTransactions);
         } else {
           alert("No parking slot available");
         }
@@ -126,60 +126,60 @@ export default function Index() {
         {
           name: "Terminal 1",
           parkingSlots: [
-            { name: "A1", distance: 1 },
-            { name: "A2", distance: 3 },
-            { name: "A3", distance: 5 },
-            { name: "A4", distance: 7 },
-            { name: "A5", distance: 9 },
-            { name: "A6", distance: 11 },
-            { name: "A7", distance: 13 },
-            { name: "A8", distance: 15 },
-            { name: "A9", distance: 17 },
-            { name: "A10", distance: 19 },
+            { id: 1, name: "A1", distance: 1 },
+            { id: 2, name: "A2", distance: 3 },
+            { id: 3, name: "A3", distance: 5 },
+            { id: 4, name: "A4", distance: 7 },
+            { id: 5, name: "A5", distance: 9 },
+            { id: 6, name: "A6", distance: 11 },
+            { id: 7, name: "A7", distance: 13 },
+            { id: 8, name: "A8", distance: 15 },
+            { id: 9, name: "A9", distance: 17 },
+            { id: 10, name: "A10", distance: 19 },
           ],
         },
         {
           name: "Terminal 2",
           parkingSlots: [
-            { name: "A1", distance: 11 },
-            { name: "A2", distance: 9 },
-            { name: "A3", distance: 7 },
-            { name: "A4", distance: 5 },
-            { name: "A5", distance: 3 },
-            { name: "A6", distance: 1 },
-            { name: "A7", distance: 3 },
-            { name: "A8", distance: 5 },
-            { name: "A9", distance: 7 },
-            { name: "A10", distance: 9 },
+            { id: 1, name: "A1", distance: 11 },
+            { id: 2, name: "A2", distance: 9 },
+            { id: 3, name: "A3", distance: 7 },
+            { id: 4, name: "A4", distance: 5 },
+            { id: 5, name: "A5", distance: 3 },
+            { id: 6, name: "A6", distance: 1 },
+            { id: 7, name: "A7", distance: 3 },
+            { id: 8, name: "A8", distance: 5 },
+            { id: 9, name: "A9", distance: 7 },
+            { id: 10, name: "A10", distance: 9 },
           ],
         },
         {
           name: "Terminal 3",
           parkingSlots: [
-            { name: "A1", distance: 19 },
-            { name: "A2", distance: 17 },
-            { name: "A3", distance: 15 },
-            { name: "A4", distance: 13 },
-            { name: "A5", distance: 11 },
-            { name: "A6", distance: 9 },
-            { name: "A7", distance: 7 },
-            { name: "A8", distance: 5 },
-            { name: "A9", distance: 3 },
-            { name: "A10", distance: 1 },
+            { id: 1, name: "A1", distance: 19 },
+            { id: 2, name: "A2", distance: 17 },
+            { id: 3, name: "A3", distance: 15 },
+            { id: 4, name: "A4", distance: 13 },
+            { id: 5, name: "A5", distance: 11 },
+            { id: 6, name: "A6", distance: 9 },
+            { id: 7, name: "A7", distance: 7 },
+            { id: 8, name: "A8", distance: 5 },
+            { id: 9, name: "A9", distance: 3 },
+            { id: 10, name: "A10", distance: 1 },
           ],
         },
       ];
       const parkingSlots = [
-        { name: "A1", isOccupied: false, type: "SP" },
-        { name: "A2", isOccupied: false, type: "MP" },
-        { name: "A3", isOccupied: false, type: "LP" },
-        { name: "A4", isOccupied: false, type: "SP" },
-        { name: "A5", isOccupied: false, type: "MP" },
-        { name: "A6", isOccupied: false, type: "LP" },
-        { name: "A7", isOccupied: false, type: "MP" },
-        { name: "A8", isOccupied: false, type: "LP" },
-        { name: "A9", isOccupied: false, type: "SP" },
-        { name: "A10", isOccupied: false, type: "MP" },
+        { id: 1, name: "A1", isOccupied: false, type: "SP" },
+        { id: 2, name: "A2", isOccupied: false, type: "MP" },
+        { id: 3, name: "A3", isOccupied: false, type: "LP" },
+        { id: 4, name: "A4", isOccupied: false, type: "SP" },
+        { id: 5, name: "A5", isOccupied: false, type: "MP" },
+        { id: 6, name: "A6", isOccupied: false, type: "LP" },
+        { id: 7, name: "A7", isOccupied: false, type: "MP" },
+        { id: 8, name: "A8", isOccupied: false, type: "LP" },
+        { id: 9, name: "A9", isOccupied: false, type: "SP" },
+        { id: 10, name: "A10", isOccupied: false, type: "MP" },
       ];
 
       setTerminals(terminalData);
@@ -247,7 +247,9 @@ export default function Index() {
           <h1>TERMINALS DISTANCE TO PARKING SLOTS</h1>
           {terminals &&
             terminals.map((item, index) => {
-              return <EntryPoints item={item} key={index} />;
+              return (
+                <EntryPoints item={item} key={index} terminal={item.name} />
+              );
             })}
         </Grid>
       </Grid>
