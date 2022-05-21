@@ -32,23 +32,32 @@ export default function BasicModal(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  // initial hrs differencial between park and unpark
   const [hrsDifferencial, setHrsDifferencial] = React.useState("");
+  // set fee
   const [fee, setFee] = React.useState(0);
+  // set rate per hour of the car
   const [ratePerHour, setRatePerHour] = React.useState(0);
+  // set daysStayed of the car in the parking lot
   const [daysStayed, setDaysStayed] = React.useState(0);
+  // set hrs stayed of the car in the parking lot
   const [hrsStayed, setHrsStayed] = React.useState(0);
+  // initialized unpark timestamp
   const [dateTimeNow, setDateTimeNow] = React.useState();
 
   const unParkSubmit = () => {
-    var end = moment(new Date(data.checkIn)); //todays date
-    var now = moment(dateTimeNow); // another date
-
+    /* Check the hrs differencial between park and unpark */
+    var end = moment(new Date(data.checkIn)); //check in
+    var now = moment(dateTimeNow); // check out
+    // subtract check in and check out timestamp as Hrs 
     var duration = moment.duration(now.diff(end));
     var hrs = duration.asHours();
 
     let hrsDifferencial = Math.ceil(hrs);
     setHrsDifferencial(hrsDifferencial);
+    // set initial fee as 40
     setFee(40);
+    // check rate per hour after exceeding 3hrs by type of car
     let ratePerHour =
       data.parkingSlotType == "SP"
         ? 20
@@ -58,30 +67,34 @@ export default function BasicModal(props) {
         ? 100
         : "";
     setRatePerHour(ratePerHour);
+
+    // initialized total fee
     let Datafee = 0;
     if (hrsDifferencial >= 24) {
+      // if the car stayed 1 day or more
       let daysStayed = (hrsDifferencial / 24) >> 0;
       let hrsStayed = hrsDifferencial % 24;
       setDaysStayed(daysStayed);
       setHrsStayed(hrsStayed);
 
       Datafee = daysStayed * 5000 + hrsStayed * ratePerHour;
-
       setFee(Datafee);
     } else if (hrsDifferencial > 3) {
+      // if the car stayed more than 3hrs
       setDaysStayed(0);
       let hrsStayed = hrsDifferencial - 3;
       setHrsStayed(hrsStayed);
       Datafee = 40 + hrsStayed * ratePerHour;
       setFee(Datafee);
     } else {
+      // if the car stayed less than or equal to 3hrs
       setDaysStayed(0);
       setHrsStayed(0);
       Datafee = 40;
       setFee(Datafee);
     }
 
-    // update parking slot status to isOccupied false
+    // updating parking slot status to isOccupied false
 
     const parkingSlot = parkingSlots.find(
       (item) => item.name == data.parkingSlotName
@@ -92,19 +105,28 @@ export default function BasicModal(props) {
     let newParkingSlots = [...parkingSlots];
     newParkingSlots[parkingSlotIndex].isOccupied = false;
     setParkingSlots(newParkingSlots);
-    // update transactions
+
+    // END updating parking slot status to isOccupied false
+
+    // update transactions data
 
     let newTransactions = [...transactions];
+    // if returning vehicle within 3hrs (dont exclude 40 fee)
     if (newTransactions[dataIndex].isReturning == true) {
       Datafee = Datafee - 40;
       setFee(Datafee);
     }
+    // update transactions data fee
     newTransactions[dataIndex].fee = Datafee;
+    // update the check out of the vehicle
     newTransactions[dataIndex].checkOut = now;
-    console.log(newTransactions[dataIndex]);
+    // update the transactions using react hooks 
     setTransactions(newTransactions);
+    // update ui for Unpark component
     setDateTimeNow("");
   };
+
+  // same as unpark function but doesnt update the transactions
   const calculateFee = () => {
     var end = moment(new Date(data.checkIn)); //todays date
     var now = moment(dateTimeNow); // another date
