@@ -3,7 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import UnPark from "./UnPark";
 import MUIDataTable from "mui-datatables";
-
+import moment from "moment";
 export default function DataTable(props) {
   const {
     transactions,
@@ -59,10 +59,22 @@ export default function DataTable(props) {
     {
       name: "checkIn",
       label: "Check-in",
+      options: {
+        customBodyRender: (value) => {
+          console.log(value);
+          return moment(value).format("MMMM Do YYYY, h:mm:ss a");
+        },
+      },
     },
     {
       name: "checkOut",
       label: "Check-out",
+      options: {
+        customBodyRender: (value) => {
+          if (value == null) return "";
+          return moment(value).format("MMMM Do YYYY, h:mm:ss a");
+        },
+      },
     },
   ];
   return (

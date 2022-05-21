@@ -99,7 +99,11 @@ export default function Index() {
             ).type,
           };
 
-          setTransactions([...transactions, transactionData]);
+          // setTransactions([...transactions, transactionData]);
+          let newTransactions  = [...transactions];
+          newTransactions.unshift(transactionData)
+          console.log(newTransactions)
+          setTransactions(newTransactions)
         } else {
           alert("No parking slot available");
         }
