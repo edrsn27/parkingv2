@@ -82,21 +82,28 @@ export default function BasicModal(props) {
     }
 
     // update parking slot status to isOccupied false
- 
-    const parkingSlot = parkingSlots.find(item=>item.name == data.parkingSlotName)
-  
-    const parkingSlotIndex = parkingSlots.indexOf(parkingSlot)
-    console.log("parkingSlotIndex",parkingSlotIndex)
+
+    const parkingSlot = parkingSlots.find(
+      (item) => item.name == data.parkingSlotName
+    );
+
+    const parkingSlotIndex = parkingSlots.indexOf(parkingSlot);
+    // console.log("parkingSlotIndex",parkingSlotIndex)
     let newParkingSlots = [...parkingSlots];
     newParkingSlots[parkingSlotIndex].isOccupied = false;
-    setParkingSlots(newParkingSlots)
+    setParkingSlots(newParkingSlots);
     // update transactions
 
     let newTransactions = [...transactions];
+    if (newTransactions[dataIndex].isReturning == true) {
+      Datafee = Datafee - 40;
+      setFee(Datafee);
+    }
     newTransactions[dataIndex].fee = Datafee;
-    newTransactions[dataIndex].checkOut = moment().format();
+    newTransactions[dataIndex].checkOut = now;
+    console.log(newTransactions[dataIndex]);
     setTransactions(newTransactions);
-   
+    setDateTimeNow("");
   };
   const calculateFee = () => {
     var end = moment(new Date(data.checkIn)); //todays date
@@ -137,6 +144,11 @@ export default function BasicModal(props) {
       setDaysStayed(0);
       setHrsStayed(0);
       Datafee = 40;
+      setFee(Datafee);
+    }
+    let newTransactions = [...transactions];
+    if (newTransactions[dataIndex].isReturning == true) {
+      Datafee = Datafee - 40;
       setFee(Datafee);
     }
   };

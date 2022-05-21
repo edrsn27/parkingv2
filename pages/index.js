@@ -11,6 +11,9 @@ import ParkingSlots from "../components/ParkingSlots/Index";
 import EntryPoints from "../components/Terminals/Index";
 import Alert from "@mui/material/Alert";
 export default function Index() {
+  // show current time and date
+  var [date, setDate] = useState(new Date());
+
   // alert
   const [showAlert, setShowAlert] = useState(false);
   const [alertText, setAlertText] = useState("");
@@ -46,6 +49,24 @@ export default function Index() {
         (item) => carPlateNumber == item.carPlateNumber && item.checkOut == null
       );
       if (!checkPlate) {
+        // check if returning before 1hr
+        let checkLastTransaction = transactions.find(
+          (item) => carPlateNumber == item.carPlateNumber
+        );
+        console.log(checkLastTransaction);
+        let isReturning = false;
+        if (checkLastTransaction) {
+          var end = moment(new Date()); //todays date
+          var now = moment(checkLastTransaction.checkOut); // another date
+
+          var duration = moment.duration(end.diff(now));
+          var minutes = duration.asMinutes();
+          console.log(minutes);
+          if (minutes < 60) {
+            isReturning = true;
+          }
+        }
+
         let data = {
           carType: carType,
           carPlateNumber: carPlateNumber,
@@ -80,7 +101,6 @@ export default function Index() {
         });
         let nearestParkingSpace = myArrayFiltered[0];
         if (nearestParkingSpace) {
-          console.log(nearestParkingSpace);
           let index = findWithAttr(
             parkingSlots,
             "name",
@@ -97,7 +117,9 @@ export default function Index() {
               (transactions.length + 1),
             carPlateNumber: carPlateNumber,
             carType: carType,
-            checkIn: moment().format(),
+            checkIn: isReturning
+              ? checkLastTransaction.checkIn
+              : moment().format(),
             checkOut: null,
             parkingSlotName: nearestParkingSpace.name,
             fee: "",
@@ -105,15 +127,15 @@ export default function Index() {
             parkingSlotType: parkingSlots.find(
               (item) => nearestParkingSpace.name == item.name
             ).type,
+            isReturning: isReturning,
           };
 
-          // setTransactions([...transactions, transactionData]);
           let newTransactions = [...transactions];
           newTransactions.unshift(transactionData);
-          console.log(newTransactions);
+
           setTransactions(newTransactions);
           setShowAlert(true);
-          setAlertText("Success! TicketID - "+transactionData.id);
+          setAlertText("Success! TicketID - " + transactionData.id);
           setAlertType("success");
         } else {
           setShowAlert(true);
@@ -206,12 +228,19 @@ export default function Index() {
       setTerminals(terminalData);
       setParkingSlots(parkingSlots);
     }
+    var timer = setInterval(() => setDate(new Date()), 1000);
+    return function cleanup() {
+      clearInterval(timer);
+    };
   }, [terminals, parkingSlots]);
 
   return (
     <Layout>
       <br />
       <h1>00 Parking Lot</h1>
+      <p> Time : {date.toLocaleTimeString()}</p>
+      <p> Date : {date.toLocaleDateString()}</p>
+
       {showAlert && <Alert severity={alertType}>{alertText}</Alert>}
       <br />
       <Grid container spacing={2}>

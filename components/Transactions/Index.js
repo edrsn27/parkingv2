@@ -59,6 +59,16 @@ export default function DataTable(props) {
       label: "Fee",
     },
     {
+      name: "isReturning",
+      label: "Is Returning Car",
+      options: {
+        customBodyRender: (value) => {
+          if (value == null) return "";
+          return value ? "Returned before 1hr of last checkout" : "";
+        },
+      },
+    },
+    {
       name: "checkIn",
       label: "Check-in",
       options: {
