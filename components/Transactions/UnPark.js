@@ -122,7 +122,7 @@ export default function BasicModal(props) {
     newTransactions[dataIndex].checkOut = now;
     // update the transactions using react hooks 
     setTransactions(newTransactions);
-    // update ui for Unpark component
+    // update ui for Unpark component DateAndTimePicker.js
     setDateTimeNow("");
   };
 

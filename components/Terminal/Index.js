@@ -4,7 +4,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-
+// select Entry Point / Terminal component
 export default function BasicSelect(props) {
   const { terminals, setSelectedTerminal } = props;
   const [input, setInput] = React.useState("");

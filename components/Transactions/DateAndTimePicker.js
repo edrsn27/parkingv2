@@ -6,7 +6,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import Typography from "@mui/material/Typography";
 import moment from "moment";
-
+// component for the date-time input
 export default function MaterialUIPickers(props) {
   const { dateTimeNow, setDateTimeNow } = props;
   const [value, setValue] = React.useState(new Date(moment().format()));
